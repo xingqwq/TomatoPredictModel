@@ -97,16 +97,16 @@ def interData(data, ID, axis, totalLen = 61*24):
     fillFun = interpolate.interp1d(x, y)
     fillY = fillFun(fillX)
     # 结果dict
-    # result = {fillX[i]:fillY[i] for i in range(0, len(fillX))}
-    # return result
+    result = {fillX[i]:fillY[i] for i in range(0, len(fillX))}
+    return result
     
     # 绘制结果
-    plt.title("ID:{} Axis:{} Trutn Num:{}".format(ID, axis, totalLen))
-    plt.scatter(x, y, color='r', s=20, marker='*')
-    plt.plot(fillX, fillY, 'blue')
-    # plt.show()
-    plt.savefig("./png/{}_{}_{}.png".format(ID, numToAxisName[axis], totalLen), dpi=600)
-    plt.close()
+    # plt.title("ID:{} Axis:{} Trutn Num:{}".format(ID, axis, totalLen))
+    # plt.scatter(x, y, color='r', s=20, marker='*')
+    # plt.plot(fillX, fillY, 'blue')
+    # # plt.show()
+    # plt.savefig("./png/{}_{}_{}.png".format(ID, numToAxisName[axis], totalLen), dpi=600)
+    # plt.close()
 
 def splitedPic(key, solve:dict, fx = 0.3, fy = 0.3, width = 500, height = 400):
     print("正在准备{}的图片数据...".format(key), flush=True)
