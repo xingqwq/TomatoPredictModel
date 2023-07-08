@@ -69,16 +69,17 @@ class TData:
         self.filePath = filePath
 
     def divideData(self, data):
-        selected_col = ['土壤水分%', '土壤温度℃', '叶面积', '叶夹角','高度', 'RVI', 'LNC', 'LNA', 'LAI']
+        selected_col = ['土壤水分%', '土壤温度℃', '叶面积', '叶夹角','高度', 'NVI', 'RVI', 'LNC', 'LNA', 'LAI']
         inputD=[]
         labelD=[]
         img_paths = []
-        tmpData = []
-        tmpLabel = []
-        tmpPaths = []
         for _k, _v in data:
             _d = _v.groupby('year_month_day')
+            tmpData = []
+            tmpLabel = []
+            tmpPaths = []
             for key, value in _d:
+                print(key)
                 tmpData.append(value[selected_col].values)
                 tmpLabel.append(value["LAI"].values)
                 tmpPaths.append(value['img_path'].values)
@@ -103,6 +104,11 @@ class TData:
         data['year_month_day'] = data.index.year.astype(str) + '_' + data.index.month.astype(str) + '_' + data.index.day.astype(str)
         selected_col = ['空气温度℃', '相对湿度%', '光照klux', '二氧化碳ppm', '土壤水分%', '土壤温度℃', '叶面积', '叶夹角',
                         '高度', 'RVI', 'LNC', 'LNA', 'LAI', 'LDW']
+        # 检查时间排序
+        for i in range(0, len(data)):
+            tmp = data['year_month_day'][i].split("_")
+            data['year_month_day'][i] ="{}_{:0>2}_{:0>2}".format(tmp[0], int(tmp[1]), int(tmp[2]))
+            
         # 归一化
         TScaler = []
         for col in selected_col:
@@ -110,6 +116,7 @@ class TData:
             data[col] = scaler.fit_transform(data[col].values.reshape(-1, 1))
             if col == "LAI":
                 TScaler.append(scaler)
+                
         # 划分训练集和测试集
         groupD = data.groupby("编号")
         _input, _label, _imgs = self.divideData(groupD)
@@ -207,9 +214,9 @@ class TModel(nn.Module):
                 labels = labels.cpu()
                 for i in range(y.shape[0]):
                     for j in range(dataLens[0].item()):
-                        truthVal.append(datas[i][j][8].item())
-                        predVal.append(datas[i][j][8].item())
-                    for j in range(self.args.label_cnt//2):
+                        truthVal.append(datas[i][j][9].item())
+                        predVal.append(datas[i][j][9].item())
+                    for j in range(self.args.label_cnt):
                         deVal.append(abs(y[i][j].item()-labels[i][j].item()))
                         truthVal.append(labels[i][j].item())
                         predVal.append(y[i][j].item())

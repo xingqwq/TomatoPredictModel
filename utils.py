@@ -36,6 +36,8 @@ def splitedExcellToCsv(fileName):
         with open("./dataset/csv/data_{}.csv".format(key.strftime("%Y_%m_%d")), 'w', encoding='utf-8') as file:
             file.write("编号,起止时间差,横向,纵向,叶面积,叶夹角,高度,NVI,RVI,LNC,LNA,LAI,LDW\n")
             for i in range(len(value)):
+                if pd.isnull(value.iloc[i, 3]):
+                    continue
                 file.write("{},{},{},{},{},{},{},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f}\n".format(
                     value.iloc[i, 1],
                     (key-startTime).days*24+int((key-startTime).seconds/3600),
@@ -45,11 +47,11 @@ def splitedExcellToCsv(fileName):
                     value.iloc[i, 5],
                     value.iloc[i, 6],
                     (0 if pd.isnull(value.iloc[i, 8]) else value.iloc[i, 8]),
-                    (0 if pd.isnull(value.iloc[i, 9]) else value.iloc[i, 9]/(0 if pd.isnull(value.iloc[i, 8]) else value.iloc[i, 8])),
-                    (0 if pd.isnull(value.iloc[i, 10]) else value.iloc[i, 10]/(0 if pd.isnull(value.iloc[i, 8]) else value.iloc[i, 8])),
-                    (0 if pd.isnull(value.iloc[i, 11]) else value.iloc[i, 11]/(0 if pd.isnull(value.iloc[i, 8]) else value.iloc[i, 8])),
-                    (0 if pd.isnull(value.iloc[i, 12]) else value.iloc[i, 12]/(0 if pd.isnull(value.iloc[i, 8]) else value.iloc[i, 8])),
-                    (0 if pd.isnull(value.iloc[i, 13]) else value.iloc[i, 13]/(0 if pd.isnull(value.iloc[i, 8]) else value.iloc[i, 8])),
+                    (0 if pd.isnull(value.iloc[i, 9]) else value.iloc[i, 9]),
+                    (0 if pd.isnull(value.iloc[i, 10]) else value.iloc[i, 10]),
+                    (0 if pd.isnull(value.iloc[i, 11]) else value.iloc[i, 11]),
+                    (0 if pd.isnull(value.iloc[i, 12]) else value.iloc[i, 12]),
+                    (0 if pd.isnull(value.iloc[i, 13]) else value.iloc[i, 13]),
                 ))
 
 def readDataGroupById():
@@ -100,7 +102,7 @@ def interData(data, ID, axis, totalLen = 61*24):
     result = {fillX[i]:fillY[i] for i in range(0, len(fillX))}
     return result
     
-    # 绘制结果
+    # # 绘制结果
     # plt.title("ID:{} Axis:{} Trutn Num:{}".format(ID, axis, totalLen))
     # plt.scatter(x, y, color='r', s=20, marker='*')
     # plt.plot(fillX, fillY, 'blue')
@@ -158,7 +160,6 @@ def prepareDataset():
     solve1 = {'111':(230, 57), '112':(230, 260), '113':(226, 477), '122':(420, 177), '123':(413, 366), 
             '211':(849, 201), '212':(854, 413), '213':(843, 634), '221':(1031, 48), '223':(1027, 480)}
 
-    # 处理二
     solve6 = {'411':(189, 84), '412':(189, 282), '413':(186, 488), '421':(257, 165), '422':(346, 393), 
             '423':(376, 612), '511':(806, 232), '512':(782, 240), '513':(779, 610), '521':(974,98)}
 
