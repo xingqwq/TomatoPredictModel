@@ -27,8 +27,8 @@ for i in range(div-1):
 
 ![img](./pic/1.png)
 
-![img](./pic./2.png)
+![img](./pic/2.png)
 
-![img](./pic/png)
+![img](./pic/3.png)
 
 ![img](./pic/4.png)
