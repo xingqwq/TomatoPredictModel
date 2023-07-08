@@ -25,10 +25,10 @@ for i in range(div-1):
 
 下面是一些预测结果图：
 
-![img](./1.png)
+![img](./pic/1.png)
 
-![img](./2.png)
+![img](./pic./2.png)
 
-![img](./3.png)
+![img](./pic/png)
 
-![img](./4.png)
+![img](./pic/4.png)
